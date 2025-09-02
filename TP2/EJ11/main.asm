@@ -16,12 +16,15 @@ _start:
         CMP EAX, 0
         JE exit
 
+        PUSH EBX
         PUSH EAX
         PUSH query
         CALL startswith
+        ADD ESP, 8
+        POP EBX
+        
         CMP EAX, 1
         JE value
-
         ADD EBX, 4
         JMP search
 
@@ -60,7 +63,6 @@ _start:
 startswith:
         PUSH EBP
         MOV EBP, ESP
-        
         MOV EDX, [EBP+8]
         MOV EBX, [EBP+12]
 loop:   MOV CL, [EDX]
