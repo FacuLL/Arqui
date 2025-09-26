@@ -77,6 +77,8 @@ void * initializeKernelBinary()
 	ncPrint("[Done]");
 	ncNewline();
 	ncNewline();
+
+	ncClear();
 	return getStackBase();
 }
 
