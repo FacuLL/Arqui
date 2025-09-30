@@ -1,8 +1,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <lib.h>
+#include <timer.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+#include <pollingKeyboard.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -82,25 +84,20 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
+void printTime() {
+	ncPrint("Hora: ");
+	ncPrintDec(getHours()-3);
+	ncPrint(":");
+	ncPrintDec(getMinutes());
+	ncPrint(":");
+	ncPrintDec(getSeconds());
+}
+
 int main()
 {	
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
+	ncPrint("hola que tal que onda");
 
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
 
-	ncPrint("[Finished]");
+
 	return 0;
 }

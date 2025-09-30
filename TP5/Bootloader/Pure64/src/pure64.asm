@@ -393,6 +393,9 @@ make_interrupt_gates: 			; make gates for the other interrupts
 	mov word [0x12*16], exception_gate_18
 	mov word [0x13*16], exception_gate_19
 
+	mov rdi, 0x20			; Set up Timer Tick handler
+	mov rax, timer_tick
+	call create_gate
 	mov rdi, 0x21			; Set up Keyboard handler
 	mov rax, keyboard
 	call create_gate

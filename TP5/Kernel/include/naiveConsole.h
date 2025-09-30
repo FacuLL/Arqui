@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+void setStyle(char style);
 void ncPrint(const char * string);
 void ncPrintChar(char character);
 void ncNewline();

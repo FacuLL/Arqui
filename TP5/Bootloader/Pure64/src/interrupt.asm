@@ -5,7 +5,6 @@
 ; Interrupts
 ; =============================================================================
 
-
 ; -----------------------------------------------------------------------------
 ; Default exception handler
 exception_gate:
@@ -26,6 +25,29 @@ interrupt_gate:				; handler for all other interrupts
 	iretq
 ; -----------------------------------------------------------------------------
 
+; -----------------------------------------------------------------------------
+; Timer tick interrupt. IRQ 0x00, INT 0x20
+; This IRQ runs every 55 ms.
+align 16
+timer_tick:
+	push rdi
+	push rax
+	mov byte [0x000B8002], 48
+	inc byte [timer_tick_count]
+	cmp byte [timer_tick_count], 91
+	jl timer_tick_end
+	mov rdi, timer_tick_message
+	inc byte [timer_tick_total_count]
+	mov byte [timer_tick_count], 0
+	mov al, [timer_tick_total_count]
+	add al, 48
+timer_tick_end:
+	mov al, 0x20
+    out 0x20, al
+	pop rax
+	pop rdi
+	iretq
+; -----------------------------------------------------------------------------
 
 ; -----------------------------------------------------------------------------
 ; Keyboard interrupt. IRQ 0x01, INT 0x21
@@ -237,6 +259,10 @@ exc_string17 db '17 - AC', 0
 exc_string18 db '18 - MC', 0
 exc_string19 db '19 - XM', 0
 
+; Extra vars for interrupts
+timer_tick_count db 0
+timer_tick_total_count db 0
+timer_tick_message db 'Hola soy el timer_tick', 0
 
 ; =============================================================================
 ; EOF
