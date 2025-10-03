@@ -26,30 +26,6 @@ interrupt_gate:				; handler for all other interrupts
 ; -----------------------------------------------------------------------------
 
 ; -----------------------------------------------------------------------------
-; Timer tick interrupt. IRQ 0x00, INT 0x20
-; This IRQ runs every 55 ms.
-align 16
-timer_tick:
-	push rdi
-	push rax
-	mov byte [0x000B8002], 48
-	inc byte [timer_tick_count]
-	cmp byte [timer_tick_count], 91
-	jl timer_tick_end
-	mov rdi, timer_tick_message
-	inc byte [timer_tick_total_count]
-	mov byte [timer_tick_count], 0
-	mov al, [timer_tick_total_count]
-	add al, 48
-timer_tick_end:
-	mov al, 0x20
-    out 0x20, al
-	pop rax
-	pop rdi
-	iretq
-; -----------------------------------------------------------------------------
-
-; -----------------------------------------------------------------------------
 ; Keyboard interrupt. IRQ 0x01, INT 0x21
 ; This IRQ runs whenever there is input on the keyboard
 align 16

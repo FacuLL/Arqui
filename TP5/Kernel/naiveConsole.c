@@ -54,6 +54,12 @@ void ncPrintBase(uint64_t value, uint32_t base)
     ncPrint(buffer);
 }
 
+void ncDelChar() {
+	if (currentVideo == (uint8_t*)0xB8000) return;
+	*(--currentVideo) = 0;
+	*(--currentVideo) = 0;
+}
+
 void ncClear()
 {
 	int i;

@@ -2,9 +2,10 @@
 #include <string.h>
 #include <lib.h>
 #include <timer.h>
+#include <idtLoader.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-#include <pollingKeyboard.h>
+#include <keyboard.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -93,11 +94,17 @@ void printTime() {
 	ncPrintDec(getSeconds());
 }
 
-int main()
-{	
-	ncPrint("hola que tal que onda");
-
-
-
+int main() {
+	load_idt();
+	clearKeyBuffer();
+	setStyle(0x2F);
+	while(1) {
+		if (!isKeyBufferEmpty()) {
+			KeyEvent event = getNextKey();
+			if (event.scancode == 0x1C) ncNewline();
+			else if (event.scancode == 0x0E) ncDelChar();
+			else if (!event.is_release) ncPrintChar(event.ascii);
+		}
+	}
 	return 0;
 }
