@@ -103,7 +103,7 @@ int main() {
 			KeyEvent event = getNextKey();
 			if (event.scancode == 0x1C) ncNewline();
 			else if (event.scancode == 0x0E) ncDelChar();
-			else if (!event.is_release) ncPrintChar(event.ascii);
+			else if (!event.is_release && event.scancode != 0x2A && event.scancode != 0x36) ncPrintChar(event.ascii);
 		}
 	}
 	return 0;
